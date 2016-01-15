@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<title>Ingresar Desperdicio</title>
+	<link rel="stylesheet" href="css/bootstrap.css" />
+	<link rel="stylesheet" href="css/estilos.css" />
+</head>
+<body>
+	<div class="text-right">
+		<a href="index.html" class="icono-menu" >
+			MENU <span class="glyphicon glyphicon-align-justify" ></span>
+		</a>
+	</div>
+	<div class="alert alert-danger text-center" id="dato-repeat" >
+		<h2>DATO REPETIDO</h2>
+	</div>
+	<form class="form-horizontal my_form" role="form" name="form_lectura" action="" method="POST" >
+		<div class="form-group">
+			<div class="text-center">
+		    	<label for="hilatura" class="control-label label_grande">HILATURA</label>
+		    </div>
+		    <div class="col-md-3"></div>
+		    <div class="col-sm-10 col-md-6">
+		      	<select name="hilatura" id="hilatura" class="form-control input_grande" required="required" >
+				</select>
+		    </div>
+		</div>
+		<div class="form-group">
+			<div class="text-center">
+		    	<label for="linea" class="control-label label_grande">LINEA</label>
+		    </div>
+		    <div class="col-md-3"></div>
+		    <div class="col-sm-10 col-md-6">
+		      	<select name="linea" id="linea" class="form-control input_grande" required="required" >
+				</select>
+		    </div>
+		</div>
+		<div class="form-group">
+			<div class="text-center">
+		   		<label for="kgs" class="control-label label_grande">KGS</label>
+		   	</div>
+		    <div class="col-sm-7 col-xs-7">
+		      	<input type="number" class="form-control input_grande" id="kgs_1" name="kgs_1" >
+		    </div>
+		    <div class="col-sm-1 col-xs-1">
+		    	<label class="control-label label_grande">.</label>
+		    </div>
+		    <div class="col-sm-4 col-xs-4">
+		    	<input type="number" class="form-control input_grande" id="kgs_2" name="kgs_2" >
+		    </div>
+		    <div class="row">
+		    	<div class="alert alert-danger text-center col-sm-10 col-md-6" id="error-kgs" role="alert">
+		      		<h2>COMPLETAR!</h2>
+		      	</div>
+		    </div>
+		</div>
+		<div class="form-group">
+		    <div class="col-xs-offset-1 col-sm-offset-3">
+		      <a href="desperdicio1.html" class="btn btn-danger boton" >ATRAS</a>
+		      <button type="submit" class="btn btn-primary boton">GUARDAR</button>
+		    </div>
+		</div>
+	</form>
+<script type="text/javascript" src="js/jquery.min.js" ></script>
+<script type="text/javascript" src="js/bootstrap.js" ></script>
+<script>
+	var MyJson_lectura;
+	var array = [];
+	if (localStorage.getItem("lista_desperdicio")!=null){
+		array = JSON.parse(localStorage.getItem("lista_desperdicio"));
+	}
+	if(localStorage.getItem('id')==null){
+		localStorage.setItem('id',1);
+	}
+	// FECHA Y HORA						
+		var fecha = new Date();
+		dia = fecha.getDate();
+		mes = fecha.getMonth()+1;
+		annio = fecha.getFullYear();
+		hora = fecha.getHours();
+		minutos = fecha.getMinutes();	
+		if(dia<10) dia = String("0"+dia);
+		if(mes<10) mes = String("0"+mes);
+		fecha_ingreso = String(annio+"-"+mes+"-"+dia);
+	// FECHA Y HORA
+
+	$(function(){
+
+		$(".numero").keypress(function(evt){
+			if((evt.charCode < 48 || evt.charCode > 57) && evt.charCode != 46){
+	            return false;
+	        }
+	    });
+
+	    $("#kgs_2").keypress(function(evt){
+			if($(this).val().length==2){
+		        return false;
+		    }
+	    });
+
+		// FECHA Y TURNO
+	    my_array = JSON.parse(localStorage.getItem('turnos'));
+	    hora_turno = my_array[2].hora_inicio;
+	    hora_max = parseInt(hora_turno.substring(0,2));
+    	if((localStorage.getItem('turno_desperdicio')=="2" || localStorage.getItem('turno_desperdicio')=="3") && hora < hora_max){
+    		fecha.setDate(fecha.getDate()-1);
+    	}
+    	dia = fecha.getDate();
+		mes = fecha.getMonth()+1;
+		annio = fecha.getFullYear();	
+    	if(dia<10) dia = String("0"+dia);
+		if(mes<10) mes = String("0"+mes);	
+		if(hora<10) hora = String("0"+hora);
+		if(minutos<10) minutos = String("0"+minutos);
+		fecha_real = String(annio+"-"+mes+"-"+dia);
+		hora_ingreso = String(hora+":"+minutos+":"+"00");
+	    // FECHA Y TURNO
+
+		// Lineas
+		array_lineas = JSON.parse(localStorage.getItem("lineas"));
+		for(var i=0;i<array_lineas.length;i++){
+			$('#linea').append('<option value='+array_lineas[i].id+' >'+array_lineas[i].descripcion+'</option>');
+		}
+		// Hilaturas
+		array_hilaturas = JSON.parse(localStorage.getItem("hilaturas"));
+		for(var i=0;i<array_hilaturas.length;i++){
+			$('#hilatura').append('<option value='+array_hilaturas[i].id+' >'+array_hilaturas[i].descripcion+'</option>');
+		}
+
+		$('.alert-danger').css('display','none');
+		var metros="";
+		function Valida(){
+			var rpta = 0;
+			var flag_repeat = 0;
+			hilatura = parseInt($('#hilatura').val(),10);
+			linea = parseInt($('#linea').val(),10);
+			if(localStorage.getItem('lista_desperdicio')!=null){
+				desperdicio = JSON.parse(localStorage.getItem('lista_desperdicio'));
+				t = localStorage.getItem("turno_desperdicio");
+				for (var i=0;i<desperdicio.length;i++){
+					if(hilatura==desperdicio[i]['hilatura'] && linea == desperdicio[i]['linea'] && t==desperdicio[i]['turno']){
+						flag_repeat = 1;
+						rpta = 1;
+						$('#dato-repeat').show().delay(5000).fadeOut();		
+					}
+				}
+			}
+			if($('#kgs_1').val()==""){
+				rpta = 1;
+				$('#error-kgs').show().delay(5000).fadeOut();
+			}
+			return rpta;
+		}
+
+		$('form[name=form_lectura]').on('submit',function(evt){
+			evt.preventDefault();
+			if(Valida()==0){	
+				if($('#kgs_2').val()==""){
+					kgs = $('#kgs_1').val()+".0";
+				}else{
+					kgs = $('#kgs_1').val()+"."+$('#kgs_2').val();
+				}
+				MyJson_desperdicio = {
+					"id" : localStorage.getItem("id"),
+					"turno" : localStorage.getItem("turno_desperdicio"),
+					"hilatura" : $('#hilatura').val(),
+					"linea" : $('#linea').val(),
+					"kgs" : kgs,
+					"hora" : hora_ingreso,
+					"fecha" : fecha_real,
+					"fecha_ingreso" : fecha_ingreso,
+				}
+				array.push(MyJson_desperdicio);
+				var jsontostring = JSON.stringify(array);
+				id = parseInt(localStorage.getItem("id"));
+				localStorage.setItem('id',id+1);
+				localStorage.setItem("lista_desperdicio", jsontostring);				
+				window.location = 'desperdicio2.html';
+			}			
+			
+		});
+	})
+</script>
+</body>
+</html>
