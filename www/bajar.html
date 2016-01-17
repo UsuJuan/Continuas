@@ -44,7 +44,7 @@
 		}
 
 		if(localStorage.getItem("lista_lectura")==null && localStorage.getItem("lista_parcial")==null){
-			$.getJSON('http://192.168.1.35/transferencias/coneccion/continuas/?callback=?')
+			$.getJSON('http://10.240.17.56/transferencias/coneccion/continuas/?callback=?')
 			.done(function(response) {
 				console.log('exito');
 				if(localStorage.getItem('turno')==null){
@@ -85,7 +85,7 @@
 		};
 		$('form').on('submit',function(evt){
 			evt.preventDefault();
-			$.getJSON('http://192.168.1.35/transferencias/bajar/maquinas/?callback=?', mostrar_maquinas)
+			$.getJSON('http://10.240.17.56/transferencias/bajar/maquinas/?callback=?', mostrar_maquinas)
 				.done(function() {
 					$('.alert-success').show().delay(5000).fadeOut();
 					console.log('exito');
@@ -95,7 +95,7 @@
 			  		console.log('fallo');
 			  	});				
 
-			$.getJSON('http://192.168.1.35/transferencias/bajar/turnos/?callback=?', mostrar_turnos)
+			$.getJSON('http://10.240.17.56/transferencias/bajar/turnos/?callback=?', mostrar_turnos)
 				.done(function() {
 			    	$('.alert-success').show().delay(5000).fadeOut();
 			    	console.log('exito');
@@ -104,7 +104,7 @@
 			    	$('.error-datos').show().delay(5000).fadeOut();
 			    	console.log('fallo');
 			  	});	
-			$.getJSON('http://192.168.1.35/transferencias/bajar/tipotorsiones/?callback=?', mostrar_tipo_torsiones)
+			$.getJSON('http://10.240.17.56/transferencias/bajar/tipotorsiones/?callback=?', mostrar_tipo_torsiones)
 				.done(function() {
 			    	$('.alert-success').show().delay(5000).fadeOut();
 			    	console.log('exito');
@@ -113,7 +113,7 @@
 			    	$('.error-datos').show().delay(5000).fadeOut();
 			    	console.log('fallo');
 			  	});
-			$.getJSON('http://192.168.1.35/transferencias/bajar/lineas/?callback=?', mostrar_lineas)
+			$.getJSON('http://10.240.17.56/transferencias/bajar/lineas/?callback=?', mostrar_lineas)
 				.done(function() {
 			    	$('.alert-success').show().delay(5000).fadeOut();
 			    	console.log('exito');
@@ -122,7 +122,7 @@
 			    	$('.error-datos').show().delay(5000).fadeOut();
 			    	console.log('fallo');
 			  	});
-			$.getJSON('http://192.168.1.35/transferencias/bajar/hilaturas/?callback=?', mostrar_hilaturas)
+			$.getJSON('http://10.240.17.56/transferencias/bajar/hilaturas/?callback=?', mostrar_hilaturas)
 				.done(function() {
 			    	$('.alert-success').show().delay(5000).fadeOut();
 			    	console.log('exito');
@@ -131,7 +131,7 @@
 			    	$('.error-datos').show().delay(5000).fadeOut();
 			    	console.log('fallo');
 			  	});
-			$.getJSON('http://192.168.1.35/transferencias/bajar/motivosparo/?callback=?', mostrar_motivos_paro)
+			$.getJSON('http://10.240.17.56/transferencias/bajar/motivosparo/?callback=?', mostrar_motivos_paro)
 				.done(function() {
 			    	$('.alert-success').show().delay(5000).fadeOut();
 			    	console.log('exito');

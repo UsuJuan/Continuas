@@ -84,7 +84,7 @@
 			$('.alert-danger').append('<h3 >'+message+'</h3>');
 			$('.alert-danger').fadeIn();
 		}
-		$.getJSON('http://192.168.1.35/transferencias/coneccion/continuas/?callback=?')
+		$.getJSON('http://10.240.17.56/transferencias/coneccion/continuas/?callback=?')
 		.done(function() {
 			console.log('exito');
 			$('#subir').fadeIn();
@@ -177,7 +177,7 @@
 				}
 			}
 			$.ajax({
-				url: 'http://192.168.1.35/transferencias/subir/',
+				url: 'http://10.240.17.56/transferencias/subir/',
 				type: 'POST',
 				crossDomain: true,
 				data: {					
