@@ -84,7 +84,7 @@
 			$('.alert-danger').append('<h3 >'+message+'</h3>');
 			$('.alert-danger').fadeIn();
 		}
-		$.getJSON('http://10.240.17.56/transferencias/coneccion/continuas/?callback=?')
+		$.getJSON('http://192.168.1.35/transferencias/coneccion/continuas/?callback=?')
 		.done(function() {
 			console.log('exito');
 			$('#subir').fadeIn();
@@ -117,26 +117,27 @@
 		        dictionary[obj.turno] = [obj.turno];
 		    dictionary[obj.turno].push(obj.nro_maquina);
 		}*/		
-		/*function ValidDesp(list1,list2){
+		function ValidDesp(list1,list2){
 			turnos_lec = dicc_tur(list1);
 			turnos_desp = dicc_tur(list2);
 			for(var i=0;i<turnos_lec.length;i++){
 				if(turnos_desp.indexOf(turnos_lec[i]) < 0){
 					$('#mensajitos').append("<h3 >Completar Desperdicio - Turno "+turnos_lec[i]+"</h3>");
+					ShowError('Completar Desperdicio - Turno '+turnos_lec[i]);
 					$('#modalbox').click();
 					break;
 				}
 			}
-		}*/
+		}
 		if(cont1==0){
 			if(lis_lec!=null){
-				/*ValidDesp(lis_lec,lis_desp);*/
+				ValidDesp(lis_lec,lis_desp);
 				if((lis_lec.length % JSON.parse(localStorage.getItem("maquinas")).length)!=0){
 						ShowError('Completar ruta de lectura.');
 						$('#modalbox').click();
 					}
 			}else{
-				/*ValidDesp(lis_par,lis_desp);*/
+				ValidDesp(lis_par,lis_desp);
 				if(localStorage.getItem("lista_parcial")==null){
 					ShowError('Completar ruta de lectura.');
 					$('#modalbox').click();
@@ -146,7 +147,7 @@
 
 		$('#subir').on('click',function(){
 			console.log('click in the button');
-			$(this).prop('disabled',true);
+			// $(this).prop('disabled',true);
 			terminar();
 		});
 
@@ -176,7 +177,7 @@
 				}
 			}
 			$.ajax({
-				url: 'http://10.240.17.56/transferencias/subir/',
+				url: 'http://192.168.1.35/transferencias/subir/',
 				type: 'POST',
 				crossDomain: true,
 				data: {					
