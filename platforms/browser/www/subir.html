@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<title>Transferencia de datos</title>
+	<link rel="stylesheet" href="css/bootstrap.css" />
+	<link rel="stylesheet" href="css/estilos.css" />
+</head>
+<body>
+	<!-- Button trigger modal -->
+	<button id="modalbox" class="btn btn-primary btn-lg hidden" data-toggle="modal" data-target="#myModal">
+	  	Modal
+	</button>
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false" >
+	  	<div class="modal-dialog">
+	    	<div class="modal-content">
+		      <div class="modal-header">
+			        <h4 class="modal-title alert alert-info" id="myModalLabel">Mensaje</h4>
+		      </div>
+		      <div class="modal-body">
+		      		<div class="alert alert-danger text-center" role="alert">
+						<h3>Error al subir Datos.</h3>
+		      		</div>
+		      		<div class="alert alert-success text-center" role="alert">
+		      			<h3>Datos subidos con exito.</h3>
+		      		</div>
+		      </div>
+		      <div class="modal-footer">
+			        <a href="index.html" name="ok" class="btn btn-primary btn-lg">Ok</a>
+		      </div>
+	    	</div>
+	  	</div>
+	</div>
+	<!-- Modal -->
+	<div class="text-right">
+		<a href="index.html" class="icono-menu" >
+			MENU <span class="glyphicon glyphicon-align-justify" ></span>
+		</a>
+	</div>	
+	<form class="form-horizontal" role="form" action="" method="POST" >
+		<div id="loading" class="text-center" >
+			<img src="loading.GIF" width="100px" heigth="100px" />
+		</div>
+		<div class="row text-center flechita">
+			<span class="glyphicon glyphicon-upload"></span>
+		</div>
+	</form>
+	<div class="row text-center" >
+		<button type="submit" id="subir" style="font-size:4em;" class="btn btn-primary btn-lg">Subir Datos</button>
+	</div>
+	<script type="text/javascript" src="js/jquery.min.js" ></script>
+	<script type="text/javascript" src="js/bootstrap.js" ></script>
+	<script>
+	var cont1 = 0;
+	function dicc_tur(lista){
+		var array = [];
+		if(lista!=null){
+			for (var i = 0; i < lista.length; ++i){
+			    var obj = lista[i];		    
+			    if (array.indexOf(obj.turno) < 0){	    	
+			        array.push(String(obj.turno));
+			    }
+			}
+		}
+		return array;
+	}
+
+	$(function(){
+
+		lis_lec = JSON.parse(localStorage.getItem("lista_lectura"));
+		lis_par = JSON.parse(localStorage.getItem('lista_parcial'));
+		array_paros = JSON.parse(localStorage.getItem('lista_paros_individual'));
+		array_cambios = JSON.parse(localStorage.getItem('lista_cambios'));
+		lis_desp = JSON.parse(localStorage.getItem('lista_desperdicio'));
+		$('#subir').fadeOut();
+		$('#loading').fadeOut();
+		$('.alert-success').fadeOut();
+		$('.alert-danger').fadeOut();
+
+		function ShowError(message){
+			$('.alert-danger h3').remove();
+			$('.alert-danger').append('<h3 >'+message+'</h3>');
+			$('.alert-danger').fadeIn();
+		}
+		$.getJSON('http://10.240.17.56/transferencias/coneccion/continuas/?callback=?')
+		.done(function() {
+			console.log('exito');
+			$('#subir').fadeIn();
+		})
+		.fail(function() {
+			ShowError("Compruebe su coneccion a la red.");
+			$('#modalbox').click();
+		});
+		if (array_cambios!=null){
+			for(i=0;i<array_cambios.length;i++){
+				var repetidor = 0;
+				for(j=0;j<array_cambios.length;j++){
+					if(array_cambios[i].nro_maquina==array_cambios[j].nro_maquina && array_cambios[i].fecha==array_cambios[j].fecha){
+						repetidor++;
+					}
+				}
+				if(repetidor>1){
+					ShowError('Hay cambios repetidos - Eliminar cambios.');
+					$('#modalbox').click();
+					cont1 = 1;
+					break;
+				}
+			}
+		}
+		/*GROUP EN ARRAY DE DICCIONARIOS*/
+		/*var dictionary = {};
+		for (var i = 0; i < lista.length; ++i){
+		    var obj = lista[i];
+		    if (dictionary[obj.turno] == undefined)
+		        dictionary[obj.turno] = [obj.turno];
+		    dictionary[obj.turno].push(obj.nro_maquina);
+		}*/		
+		function ValidDesp(list1,list2){
+			turnos_lec = dicc_tur(list1);
+			turnos_desp = dicc_tur(list2);
+			for(var i=0;i<turnos_lec.length;i++){
+				if(turnos_desp.indexOf(turnos_lec[i]) < 0){
+					$('#mensajitos').append("<h3 >Completar Desperdicio - Turno "+turnos_lec[i]+"</h3>");
+					ShowError('Completar Desperdicio - Turno '+turnos_lec[i]);
+					$('#modalbox').click();
+					break;
+				}
+			}
+		}
+		if(cont1==0){
+			if(lis_lec!=null){
+				ValidDesp(lis_lec,lis_desp);
+				if((lis_lec.length % JSON.parse(localStorage.getItem("maquinas")).length)!=0){
+						ShowError('Completar ruta de lectura.');
+						$('#modalbox').click();
+					}
+			}else{
+				ValidDesp(lis_par,lis_desp);
+				if(localStorage.getItem("lista_parcial")==null){
+					ShowError('Completar ruta de lectura.');
+					$('#modalbox').click();
+				}
+			}
+		}
+
+		$('#subir').on('click',function(){
+			$('#subir').fadeOut();
+			$(this).prop('disabled','disabled');
+			terminar();
+		});
+
+		function terminar(){			
+			$('#loading').fadeIn();			
+			if (lis_par!=null){
+				if (lis_par.length>0){					
+					if(lis_lec==null){
+						lis_lec = [];
+					}
+					for(i=0;i<lis_par.length;i++){
+						MyJson_lectura = {
+							"id" : lis_par[i].id,
+							"turno" : lis_par[i].turno,
+							"nro_maquina" : lis_par[i].nro_maquina,
+							"nro_horas"	 : "",
+							"nro_metros" : lis_par[i].nro_metros,
+							"fecha" : lis_par[i].fecha,
+							"fecha_ingreso" : lis_par[i].fecha_ingreso,
+							"hora" : lis_par[i].hora,
+							"tipo_lectura" : "PARCIAL",
+						}
+						lis_lec.push(MyJson_lectura);						
+					}
+					var jsontostring = JSON.stringify(lis_lec);
+					localStorage.setItem("lista_lectura", jsontostring);	
+				}
+			}
+			$.ajax({
+				url: 'http://10.240.17.56/transferencias/subir/',
+				type: 'POST',
+				crossDomain: true,
+				data: {					
+					'lecturas': localStorage.getItem("lista_lectura"),
+					'cambios': localStorage.getItem("lista_cambios"),
+					'paros': localStorage.getItem("lista_paros"),
+					'desperdicio': localStorage.getItem("lista_desperdicio"),
+				},
+				dataType: 'json',		
+			})
+			.done(function(response) {
+				$('#loading').fadeOut();
+				if(response.msg=='ok'){
+				console.log("success ok");
+				$('.alert-success').fadeIn();
+				localStorage.removeItem('lista_paros');
+				localStorage.removeItem('lista_paros_individual');
+				localStorage.removeItem('lista_cambios');
+				localStorage.removeItem('lista_parcial');
+				localStorage.removeItem('lista_lectura');
+				localStorage.removeItem('id_cambios');
+				localStorage.removeItem('id');
+				localStorage.removeItem('contador');
+				localStorage.removeItem('paro');
+				localStorage.removeItem('lista_desperdicio');
+				localStorage.removeItem('tipo_lec_1');
+				localStorage.removeItem('tipo_lec_2');
+				localStorage.removeItem('turno');
+				}else{
+					console.log("success fail");
+					ShowError("Error al subir datos (2).");	
+				}
+				$('#modalbox').click();	
+			})
+			.fail(function() {
+				console.log("error");
+				$('#loading').fadeOut();
+				ShowError("Error al subir datos (1).");
+				$('#modalbox').click();
+			});
+      }
+	})
+	</script>
+</body>
+</html>

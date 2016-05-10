@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<title>Modificar datos</title>
+	<link rel="stylesheet" href="css/bootstrap.css" />
+	<link rel="stylesheet" href="css/estilos.css" />
+</head>
+<body>
+	<div class="text-right">
+		<a href="index.html" class="icono-menu" >
+			MENU <span class="glyphicon glyphicon-align-justify" ></span>
+		</a>
+	</div>
+	<div class="alert alert-danger" role="alert">
+		<h3>
+			DEBE LLENAR UN CAMPO.
+		</h3>
+	</div>
+	<div class="alert alert-success" role="alert">
+		<h3>
+			SE MODIFICÓ CON EXITO.
+		</h3>
+	</div>
+	<form class="form-horizontal my_form" role="form" name="form_desperdicio_update" action="" method="POST" >
+		<div class="form-group">
+			<div class="text-center">
+		    	<label for="hilatura" class="control-label label_grande">HILATURA</label>
+		    </div>
+		    <div class="col-md-3"></div>
+		    <div class="col-sm-10 col-md-6">
+		      	<select name="hilatura" id="hilatura" class="form-control input_grande" disabled >
+				</select>
+		    </div>
+		</div>
+		<div class="form-group">
+			<div class="text-center">
+		    	<label for="linea" class="control-label label_grande">LINEA</label>
+		    </div>
+		    <div class="col-md-3"></div>
+		    <div class="col-sm-10 col-md-6">
+		      	<select name="linea" id="linea" class="form-control input_grande" disabled >
+				</select>
+		    </div>
+		</div>
+		<div class="form-group">
+			<div class="text-center">
+		   		<label for="kgs" class="control-label label_grande">KGS</label>
+		   	</div>
+		    <div class="col-sm-7 col-xs-7">
+		      	<input type="number" class="form-control input_grande" id="kgs_1" name="kgs_1" >
+		    </div>
+		    <div class="col-sm-1 col-xs-1">
+		    	<label class="control-label label_grande">.</label>
+		    </div>
+		    <div class="col-sm-4 col-xs-4">
+		    	<input type="number" class="form-control input_grande" id="kgs_2" name="kgs_2" >
+		    </div>
+		    <div class="row">
+		    	<div class="alert alert-danger text-center col-sm-10 col-md-6" id="error-kgs" role="alert">
+		      		<h2>COMPLETAR!</h2>
+		      	</div>
+		    </div>
+		</div>
+		<div class="form-group">
+		    <div class="col-xs-offset-1 col-sm-offset-3">
+		      <button type="submit" class="btn btn-primary boton">GUARDAR</button>
+		      <a href="desperdicioupdate.html" class="btn btn-danger boton" >ATRAS</a>
+		    </div>
+		</div>
+	</form>
+<script type="text/javascript" src="js/jquery.min.js" ></script>
+<script type="text/javascript" src="js/bootstrap.js" ></script>
+<script>
+	id = localStorage.getItem('id_desperdicio_update');
+	$(function(){
+		$("#kgs_2").keypress(function(evt){
+			if($(this).val().length==2){
+		        return false;
+		    }
+	    });
+		// Lineas
+		array_lineas = JSON.parse(localStorage.getItem("lineas"));
+		for(var i=0;i<array_lineas.length;i++){
+			$('#linea').append('<option value='+array_lineas[i].id+' >'+array_lineas[i].descripcion+'</option>');
+		}
+		// Hilaturas
+		array_hilaturas = JSON.parse(localStorage.getItem("hilaturas"));
+		for(var i=0;i<array_hilaturas.length;i++){
+			$('#hilatura').append('<option value='+array_hilaturas[i].id+' >'+array_hilaturas[i].descripcion+'</option>');
+		}
+		$('.alert-danger').css('display','none');
+		$('.alert-success').css('display','none');
+		if (localStorage.getItem('lista_desperdicio')!=null){
+			desperdicio = JSON.parse(localStorage.getItem('lista_desperdicio'));
+			for(var i=0;i<desperdicio.length;i++){
+				if(desperdicio[i]['id']==id){
+					$('#hilatura').val(desperdicio[i]['hilatura']);
+					$('#linea').val(desperdicio[i]['linea']);
+					$('#kgs_1').val(desperdicio[i]['kgs'].split('.')[0]);
+					$('#kgs_2').val(desperdicio[i]['kgs'].split('.')[1]);
+				}
+			}
+		}
+		$('form[name=form_desperdicio_update]').on('submit',function(event){
+			event.preventDefault();
+			if($('#kgs_1').val() !=""){
+				if($('#kgs_2').val()==""){
+					kgs = $('#kgs_1').val()+".0";
+				}else{
+					kgs = $('#kgs_1').val()+"."+$('#kgs_2').val();
+				}
+				if(localStorage.getItem('lista_desperdicio')!=null ){
+					desperdicio = JSON.parse(localStorage.getItem('lista_desperdicio'));
+					for(var i=0;i<desperdicio.length;i++){
+						if(desperdicio[i]['id']==id){
+							myjson = desperdicio;
+							myjson[i]['kgs'] = kgs;
+							myjson_string = JSON.stringify(myjson);
+							localStorage.setItem('lista_desperdicio',myjson_string);
+							$('.alert-success').show().delay(5000).fadeOut();
+							localStorage.removeItem('id_lectura_update');
+							break;
+						}
+					}
+				}
+			}else{
+				$('#error-kgs').show().delay(5000).fadeOut();
+			}
+		});
+
+	})
+</script>
+</body>
+</html>

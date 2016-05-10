@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<title>Cambios</title>
+	<link rel="stylesheet" href="css/bootstrap.css" />
+	<link rel="stylesheet" href="css/estilos.css" />
+</head>
+<body>
+	<!-- Button trigger modal 1 -->
+	<button id="modalbox" class="btn btn-primary btn-lg hidden" data-toggle="modal" data-target="#myModal">
+	  	Modal
+	</button>
+	<!-- Modal 1 -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false" >
+	  	<div class="modal-dialog">
+	    	<div class="modal-content">
+		      <div class="modal-header">
+			        <h4 class="modal-title alert alert-warning" id="myModalLabel">Mensaje</h4>
+		      </div>
+		      <div class="modal-body">
+		      		<div class="alert alert-info" id="mensajes" role="alert">
+
+		      		</div>
+		      </div>
+		      <div class="modal-footer text-left">
+			        <button type="button" data-dismiss="modal" id="conservar" class="btn-lg btn-primary" >Agregar</button>
+			        <button type="button" data-dismiss="modal" id="cancelar" class="btn-lg btn-danger" >Cancelar</button>
+		      </div>
+	    	</div>
+	  	</div>
+	</div>
+	<!-- Modal 1 -->
+	<div class="text-right">
+		<a href="index.html" class="icono-menu" >
+			MENU <span class="glyphicon glyphicon-align-justify" ></span>
+		</a>
+	</div>
+	<form class="form-horizontal my_form" role="form" name="form_cambios" action="" method="POST" >
+		<div class="form-group">
+			<div class="text-center">
+		   		<label for="dia" class="control-label label_grande">FECHA</label>
+		   	</div>
+		    <div class="col-sm-4 col-xs-4">
+		      <input type="number" class="form-control input_grande twodigits" id="dia" name="dia" autocomplete="off" placeholder="Día" >
+		    </div>
+		    <div class="col-sm-4 col-xs-4">
+		      <input type="number" class="form-control input_grande twodigits" id="mes" name="mes" autocomplete="off" placeholder="Mes" >
+		    </div>
+		    <div class="col-sm-4 col-xs-4">
+		      <input type="number" class="form-control input_grande twodigits" id="annio" name="annio" autocomplete="off" placeholder="Año" >
+		    </div>
+		    <div class="row">
+		    	<div class="alert alert-danger text-center col-sm-10 col-md-6" id="error-fecha" role="alert">
+		      		<h2>ERROR!</h2>
+		      	</div>
+		    </div>
+		</div>
+		<div class="form-group">
+			<div class="text-center">
+				<label for="nro_maquina" class="control-label label_grande">NRO MAQUINA</label>
+			</div>
+			<div class="col-md-3"></div>
+		    <div class="col-sm-10 col-md-6">
+		      <input type="number" class="form-control input_grande numero" id="nro_maquina" name="nro_maquina" autocomplete="off" >
+		    </div>
+		    <div class="row">
+		    	<div class="alert alert-danger text-center col-sm-10 col-md-6" id="error-maquina" role="alert">
+		      		<h2>ERROR!</h2>
+		      	</div>
+		    </div>
+		</div>
+		<div class="form-group">
+			<div class="text-center">
+		   		<label for="titulo" class="control-label label_grande">TITULO</label>
+		   	</div>
+		   	<div class="col-md-3"></div>
+		    <div class="col-sm-10 col-md-6">
+		      <input type="number" class="form-control input_grande numero" id="titulo" name="titulo" autocomplete="off" >
+		    </div>
+		    <div class="row">
+		    	<div class="alert alert-danger text-center col-sm-10 col-md-6" id="error-titulo" role="alert">
+		      		<h2>COMPLETAR!</h2>
+		      	</div>
+		    </div>
+		</div>
+		<div class="form-group">
+			<div class="text-center">
+		   		<label for="codigo" class="control-label label_grande">CODIGO</label>
+		   	</div>
+		   	<div class="col-md-3"></div>
+		    <div class="col-sm-10 col-md-6">
+		      	<input type="number" name="codigo" id="codigo" class="form-control input_grande" />
+		    </div>
+		    <div class="row">
+		    	<div class="alert alert-danger text-center col-sm-10 col-md-6" id="error-codigo" role="alert">
+		      		<h2>COMPLETAR!</h2>
+		      	</div>
+		    </div>
+		    <div class="row">
+		    	<div class="alert alert-danger text-center col-sm-10 col-md-6" id="error-codigo2" role="alert">
+		      		<h2>8 DIGITOS!</h2>
+		      	</div>
+		    </div>
+		</div>
+		<div class="form-group">
+			<div class="text-center">
+		   		<label for="torsion" class="control-label label_grande">TORSION</label>
+		   	</div>
+		   	<div class="col-md-3"></div>
+		    <div class="col-sm-10 col-md-6">
+		      <input type="number" class="form-control input_grande numero" id="torsion" name="torsion" autocomplete="off" >
+		    </div>
+		    <div class="row">
+		    	<div class="alert alert-danger text-center col-sm-10 col-md-6" id="error-torsion" role="alert">
+		      		<h2>COMPLETAR!</h2>
+		      	</div>
+		    </div>
+		</div>
+		<div class="form-group">
+			<div class="text-center">
+		   		<label for="tipo_torsion" class="control-label label_grande">TIPO TORSION</label>
+		   	</div>
+		   	<div class="col-md-3"></div>
+		    <div class="col-sm-10 col-md-6">
+		      	<select name="tipo_torsion" id="tipo_torsion" class="form-control input_grande" required="required" >
+				</select>
+		    </div>
+		</div>		
+		<div class="form-group">
+			<div class="text-center">
+		   		<label for="rpm" class="control-label label_grande">RPM</label>
+		   	</div>
+		   	<div class="col-md-3"></div>
+		    <div class="col-sm-10 col-md-6">
+		      <input type="number" class="form-control input_grande numero" id="rpm" name="rpm" autocomplete="off" >
+		    </div>
+		    <div class="row">
+		    	<div class="alert alert-danger text-center col-sm-10 col-md-6" id="error-rpm" role="alert">
+		      		<h2>COMPLETAR!</h2>
+		      	</div>
+		    </div>
+		</div>
+		<div class="form-group">
+			<div class="text-center">
+		    	<label for="linea" class="control-label label_grande">LINEA</label>
+		    </div>
+		    <div class="col-md-3"></div>
+		    <div class="col-sm-10 col-md-6">
+		      	<select name="linea" id="linea" class="form-control input_grande" required="required" >
+				</select>
+		    </div>
+		</div>
+		<div class="form-group">
+			<div class="text-center">
+		   		<label for="contador" class="control-label label_grande">CONTADOR</label>
+		   	</div>
+		   	<div class="col-md-3"></div>
+		    <div class="col-sm-10 col-md-6">
+		      <input type="number" class="form-control input_grande numero" id="contador" name="contador" autocomplete="off" >
+		    </div>
+		    <div class="row">
+		    	<div class="alert alert-danger text-center col-sm-10 col-md-6" id="error-contador" role="alert">
+		      		<h2>COMPLETAR!</h2>
+		      	</div>
+		    </div>
+		</div>
+		<div class="form-group">
+			<div class="text-center">
+		   		<label for="hora" class="control-label label_grande">HORA</label>
+		   	</div>
+		   	<div class="col-sm-1 col-xs-1"></div>
+		    <div class="col-sm-4 col-xs-4">
+		      <input type="number" class="form-control input_grande numero" maxlength="5" id="hora" name="hora" autocomplete="off" placeholder="HH" >		      
+		    </div>
+		    <div class="col-sm-1 col-xs-1">
+		    	<label class="control-label label_grande">:</label>
+		    </div>
+		    <div class="col-sm-4 col-xs-4">
+		    	<input type="number" class="form-control input_grande numero" maxlength="5" id="minutos" name="minutos" autocomplete="off" placeholder="MM" >
+		    </div>
+		    <div class="col-sm-2 col-xs-2"></div>
+		    <div class="row">
+		    	<div class="col-sm-2 col-xs-2"></div>
+			    <div class="col-sm-4 col-xs-4">
+			    	<div class="alert alert-danger text-center" id="error-hora" role="alert">
+			      		<h2>ERROR!</h2>
+			      	</div>
+			    </div>
+			    <div class="col-sm-2 col-xs-2"></div>
+			    <div class="col-sm-4 col-xs-4">
+			    	<div class="alert alert-danger text-center" id="error-minutos" role="alert">
+			      		<h2>ERROR!</h2>
+			      	</div>
+			    </div>
+		    </div>
+		</div>
+		<div class="form-group">
+		    <div class="col-sm-offset-3">
+		      <a href="cambiomenu.html" class="btn btn-danger boton" >ATRAS</a>
+		      <button type="submit" class="btn btn-primary boton">GUARDAR</button>		      
+		    </div>
+		</div>
+	</form>
+<script type="text/javascript" src="js/jquery.min.js" ></script>
+<script type="text/javascript" src="js/bootstrap.js" ></script>
+<script>	
+	var MyJson_cambios;
+	var array = [];
+	if (localStorage.getItem("lista_cambios")!=null){
+		my_array = JSON.parse(localStorage.getItem("lista_cambios"));
+		array = JSON.parse(localStorage.getItem("lista_cambios"));
+	}
+	if(localStorage.getItem('id_cambios')==null){
+		localStorage.setItem('id_cambios',1);
+	}
+	// FECHA Y HORA
+		var fecha = new Date();
+		hora = fecha.getHours();
+		dia = fecha.getDate();
+		mes = fecha.getMonth()+1;
+		annio = fecha.getFullYear();
+		if(dia<10) dia = String("0"+dia);
+		if(mes<10) mes = String("0"+mes);		
+		fecha_string = String(annio+"-"+mes+"-"+dia);
+		minutos = fecha.getMinutes();
+		if(hora<10)	hora = String("0"+hora);
+		if(minutos<10) minutos = String("0"+minutos);
+		hora_string = String(hora+":"+minutos+":"+"00");
+	// FECHA Y HORA
+
+	$(function(){
+		annio_2 = String(annio).substring(2,4);
+		$('#dia').val(dia);
+		$('#mes').val(mes);
+		$('#annio').val(annio_2);		
+		$('.alert-danger').css('display','none');
+		// 2 DIGITOS
+		$(".twodigits").keypress(function(evt){
+			if($(this).val().length==2){
+		        return false;
+		    }
+	    });
+
+		$(".numero").keypress(function(evt){
+	        if((evt.charCode < 48 || evt.charCode > 57)){
+	            return false;
+	        } 
+	    }); 
+
+	    $("#hora").keyup(function(event){
+		    if($(this).val().length==2){
+		        $('#minutos').focus();
+		    }
+		});    
+
+		// Tipo Torsion
+		array_tt = JSON.parse(localStorage.getItem("tipo_torsiones"));
+		for(var i=0;i<array_tt.length;i++){
+			$('#tipo_torsion').append('<option value='+array_tt[i].id+' >'+array_tt[i].descripcion+'</option>');
+		}
+		// Lineas
+		array_lineas = JSON.parse(localStorage.getItem("lineas"));
+		for(var i=0;i<array_lineas.length;i++){
+			$('#linea').append('<option value='+array_lineas[i].id+' >'+array_lineas[i].descripcion+'</option>');
+		}
+
+		$('#cancelar').on('click',function(){
+			$('#mensajitos').remove();
+		});
+
+		$('#conservar').on('click',function(){
+			array.push(MyJson_cambios);
+			var jsontostring = JSON.stringify(array);
+			localStorage.setItem("lista_cambios", jsontostring);
+			$('.alert-success').show().delay(5000).fadeOut();
+			$('#mensajitos').remove();
+			window.location = 'cambiomenu.html';
+		});	
+
+		$('form[name=form_cambios]').on('submit',function(evt){
+			evt.preventDefault();	
+			fec = "20"+$('#annio').val()+"-"+$('#mes').val()+"-"+$('#dia').val();
+			if(valida(fec)==1){
+				HoraTwoPto = $('#hora').val()+":"+$('#minutos').val();
+				MyJson_cambios = {
+					"id" : localStorage.getItem("id_cambios"),
+					"nro_maquina" : $('#nro_maquina').val(),
+					"titulo" : $('#titulo').val(),
+					"torsion" : $('#torsion').val(),
+					"tipo_torsion" : $('#tipo_torsion').val(),
+					"hora_cambio" : HoraTwoPto+":00",
+					"codigo" : $('#codigo').val(),
+					"linea" : $("#linea").val(),
+					"rpm" : $('#rpm').val(),
+					"contador" : $('#contador').val(),
+					"fecha" : fec,
+					"fecha_ingreso":fecha_string,
+					"hora" : hora_string,
+					"estado" :1,
+				}
+				var indicator = 0;
+				var entrada = 0;
+				ac = JSON.parse(localStorage.getItem('lista_cambios'));
+				if (ac!=null) {
+					for (i=0;i<ac.length;i++){
+						if(fec == ac[i]['fecha']){
+							if($('#nro_maquina').val() == ac[i]['nro_maquina']){
+								entrada = 1;
+								if(indicator==0){
+									$('#modalbox').click();
+									indicator = 1;
+									$('#mensajes').append("<div id='mensajitos' ></div>");
+								}						
+								$('#mensajitos').append("<h5 >La maquina "+ac[i]['nro_maquina']+" ya tiene cambio en este día, su hora es: "+ac[i]['hora_cambio']+".</h5>");
+							}
+						}
+					}
+				}
+				if (entrada==0){
+					array.push(MyJson_cambios);
+					var jsontostring = JSON.stringify(array);
+					localStorage.setItem("lista_cambios", jsontostring);
+					id_cambios = parseInt(localStorage.getItem("id_cambios"));
+					localStorage.setItem('id_cambios',id_cambios+1);
+					window.location = "cambiomenu.html";
+				}
+			}
+
+			function valida(fec){
+				var rpta = 1;
+				maquinas = JSON.parse(localStorage.getItem('maquinas'));				
+				var flag = 0;
+				for(var i=0;i<maquinas.length;i++){
+					if(maquinas[i].nombre==$('#nro_maquina').val()){
+						flag = 1;
+						break;
+					}
+				}
+				if(flag!=1){
+					$('#error-maquina').show().delay(5000).fadeOut();
+					rpta = 0;
+				}
+				if($('#titulo').val()==""){
+					rpta = 0;
+					$('#error-titulo').show().delay(5000).fadeOut();
+				}
+				if($('#torsion').val()==""){
+					rpta = 0;
+					$('#error-torsion').show().delay(5000).fadeOut();
+				}
+				if($('#rpm').val()==""){
+					rpta = 0;
+					$('#error-rpm').show().delay(5000).fadeOut();
+				}
+				if($('#contador').val()==""){
+					rpta = 0;
+					$('#error-contador').show().delay(5000).fadeOut();
+				}
+				if($('#codigo').val()==""){
+					rpta = 0;
+					$('#error-codigo').show().delay(5000).fadeOut();
+				}else{
+					if($('#codigo').val()!="0"){
+						if($('#codigo').val().length!=8){
+							rpta = 0;
+							$('#error-codigo2').show().delay(5000).fadeOut();				
+						}
+					}
+				}
+				if($('#hora').val().length!=2 || parseInt($('#hora').val())>23){
+					rpta = 0;
+					$('#error-hora').show().delay(5000).fadeOut();
+				}
+				if($('#minutos').val().length!=2 || parseInt($('#minutos').val())>59){
+					rpta = 0;
+					$('#error-minutos').show().delay(5000).fadeOut();
+				}
+				test = fec.split("-");
+				dt = parseInt(test[2],10);
+				mt = parseInt(test[1],10);
+				at = parseInt(test[0],10);
+				var d = new Date(at,mt-1,dt);
+				if(d.getFullYear() != at || (d.getMonth()+1) != mt || d.getDate() != dt){
+					rpta = 0;
+					console.log("Fecha no válida.");
+					$('#error-fecha').show().delay(5000).fadeOut();
+				}
+				return rpta;
+			}
+		});
+	})
+</script>
+</body>
+</html>
